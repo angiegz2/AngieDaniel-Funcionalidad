@@ -1,88 +1,138 @@
 import React from 'react';
 import Link from 'next/link';
-import { Bell, Home, LineChart, Package, Package2, ShoppingCart, Users } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/src/components/ui/avatar';
-import { Badge } from '@/src/components/ui/badge';
-import { Button } from '@/src/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { useSession } from 'next-auth/react';
 
-const Index = () => {
+import {
+  Bell,
+  Home,
+  LineChart,
+  BookCopy,
+  LibraryBig,
+  Users,
+} from 'lucide-react';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/src/components/ui/avatar';
+import { Button } from '@/src/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { useRouter } from 'next/router';
+
+const Sidebar = () => {
   const { data: session } = useSession();
+  const location = useRouter();
+
   return (
-    <div className='hidden border-r bg-muted/40 md:block'>
-      <div className='flex h-full max-h-screen flex-col gap-2'>
-        <div className='flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6'>
-          <Link href='/' className='flex items-center gap-2 font-semibold'>
-            <Package2 className='h-6 w-6' />
-            <span className=''>Virtual Inventarios</span>
-          </Link>
-          <Button variant='outline' size='icon' className='ml-auto h-8 w-8'>
-            <Bell className='h-4 w-4' />
-            <span className='sr-only'>Toggle notifications</span>
-          </Button>
-        </div>
-        <div className='flex-1'>
-          <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
+    <div className='w-64 h-screen bg-gray-900 text-white flex flex-col'>
+      {/* Header */}
+      <div className='flex items-center justify-between px-6 py-4 border-b border-gray-700'>
+        <Link href='/' className='flex items-center gap-2 text-lg font-bold'>
+          <LibraryBig className='h-6 w-6 text-yellow-500' />
+          <span>BiblioGest</span>
+        </Link>
+        <Button variant='ghost' size='icon'>
+          <Bell className='h-5 w-5 text-gray-400' />
+        </Button>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className='flex-1 mt-4'>
+        <ul className='space-y-2'>
+          <li>
             <Link
               href='/'
-              className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
+              className={`flex items-center gap-4 px-6 py-3 rounded-md ${
+                location.pathname === '/'
+                  ? 'bg-gray-800 text-yellow-500'
+                  : 'hover:bg-gray-800 hover:text-yellow-400'
+              }`}
             >
-              <Home className='h-4 w-4' />
-              Dashboard
+              <Home className='h-5 w-5' />
+              <span>Dashboard</span>
             </Link>
+          </li>
+          <li>
             <Link
               href='/orders'
-              className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
+              className={`flex items-center gap-4 px-6 py-3 rounded-md ${
+                location.pathname === '/orders'
+                  ? 'bg-gray-800 text-yellow-500'
+                  : 'hover:bg-gray-800 hover:text-yellow-400'
+              }`}
             >
-              <ShoppingCart className='h-4 w-4' />
-              Orders
-              <Badge className='ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full'>
-                6
-              </Badge>
+              <BookCopy className='h-5 w-5' />
+              <span>Requests</span>
             </Link>
+          </li>
+          <li>
             <Link
               href='/products'
-              className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary'
+              className={`flex items-center gap-4 px-6 py-3 rounded-md ${
+                location.pathname === '/products'
+                  ? 'bg-gray-800 text-yellow-500'
+                  : 'hover:bg-gray-800 hover:text-yellow-400'
+              }`}
             >
-              <Package className='h-4 w-4' />
-              Products{' '}
+              <LibraryBig className='h-5 w-5' />
+              <span>Books</span>
             </Link>
+          </li>
+          <li>
             <Link
               href='/customers'
-              className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
+              className={`flex items-center gap-4 px-6 py-3 rounded-md ${
+                location.pathname === '/customers'
+                  ? 'bg-gray-800 text-yellow-500'
+                  : 'hover:bg-gray-800 hover:text-yellow-400'
+              }`}
             >
-              <Users className='h-4 w-4' />
-              Customers
+              <Users className='h-5 w-5' />
+              <span>Clients</span>
             </Link>
+          </li>
+          <li>
             <Link
               href='/users'
-              className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
+              className={`flex items-center gap-4 px-6 py-3 rounded-md ${
+                location.pathname === '/users'
+                  ? 'bg-gray-800 text-yellow-500'
+                  : 'hover:bg-gray-800 hover:text-yellow-400'
+              }`}
             >
-              <LineChart className='h-4 w-4' />
-              Users
+              <LineChart className='h-5 w-5' />
+              <span>Users</span>
             </Link>
-          </nav>
-        </div>
-        <div className='mt-auto p-4'>
-          <Card x-chunk='dashboard-02-chunk-0'>
-            <CardHeader className='flex flex-row gap-5 justify-center items-center p-2 pt-0 md:p-4'>
-              <div>
-                <CardTitle>{session?.user?.name}</CardTitle>
-                <CardTitle>{session?.user?.email}</CardTitle>
-                <CardTitle>Admin</CardTitle>
-              </div>
-              <Avatar>
-                <AvatarImage src={session?.user?.image ?? 'https://github.com/shadcn.png'} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </CardHeader>
-            <CardContent className=' flex justify-center items-center p-2 pt-0 md:p-4 md:pt-0'></CardContent>
-          </Card>
-        </div>
+          </li>
+        </ul>
+      </nav>
+
+      {/* User Info */}
+      <div className='mt-auto p-6 border-t border-gray-700'>
+        <Card className='bg-gray-800 text-white'>
+          <CardHeader className='flex items-center gap-4'>
+            <Avatar>
+              <AvatarImage
+                src={session?.user?.image ?? 'https://github.com/shadcn.png'}
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div>
+              <CardTitle className='text-lg font-semibold'>
+                {session?.user?.name ?? 'Guest'}
+              </CardTitle>
+              <span className='text-sm text-gray-400'>Admin</span>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Button variant='outline' className='w-full text-yellow-500'>
+              Log Out
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 };
 
-export default Index;
+export default Sidebar;
